@@ -1,0 +1,41 @@
+@CHARSET "UTF-8";
+.uploader{
+
+}
+.uploader_progress{
+
+}
+.upload_button{
+
+}
+.uploaded_element{
+
+}
+
+#uploadProgressBox{
+    width: 200px;
+    height: 30px;
+    background: darkgray;
+}
+#uploadProgressBar{
+    width: 20%;
+    height: auto;
+    background: activeborder;
+}
+#progressbar{
+    width: 300px;
+}
+#uploadList{
+    width: 400px;
+}
+
+#fileName{
+    width: 300px;
+}
+#deleteButton{
+
+    width: 30px;
+    border:none;
+    height: 30px;
+    background: url(Delete.png)  0 0 no-repeat;
+}
