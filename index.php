@@ -12,19 +12,26 @@
                 delXHR = new XMLHttpRequest();
                 delXHR.open("GET", "delete.php?filename="+filename, true);
                 delXHR.send(null);
-                var id = filename.replace(".","\\.")
+                var id = filename.replace(".","\\.");
                 $("#"+id).remove();
-                
             }
             function uploadToServer()
             {
                 fileField = document.getElementById("uploadedFile");
                 var fileToUpload = fileField.files[0]; 
-
+                var fileTypeAllowed = new Array("video/3gpp","video/mp4","video/quicktime", "video/avi", "video/mpeg");
+                
+                if(fileTypeAllowed.indexOf(fileToUpload.type) == -1)
+                {
+                    alert("Filetype invalid");
+                    return;
+                }
+                
+                
                 var xhr = new XMLHttpRequest();
                 var uploadStatus = xhr.upload;
                 var serverResponse = null;
-                uploadStatus.addEventListener("loadstart",function(){$("#progressbar").progressbar({enable:true})} , false);
+                uploadStatus.addEventListener("loadstart",function(){$("#progressbar").progressbar({enable:true});} , false);
                 uploadStatus.addEventListener("progress", function (ev) {
                     if (ev.lengthComputable) {
                         var progressVal = Math.round((ev.loaded / ev.total) * 100);
@@ -34,7 +41,7 @@
                     }
                 }, false);
         
-                uploadStatus.addEventListener("error", function (ev) {$("#error").html(ev)}, false);
+                uploadStatus.addEventListener("error", function (ev) {$("#error").html(ev);}, false);
                 uploadStatus.addEventListener("loadend", function (ev)
                 {
                     //$("#error").html("APPOSTO!"); 
@@ -43,11 +50,8 @@
                     
                 }, false);
 
-                xhr.open(
-                "POST",
-                "upload.php",
-                true
-            );
+                xhr.open("POST", "upload.php", true);
+                
                 xhr.setRequestHeader("Cache-Control", "no-cache");
                 xhr.setRequestHeader("Content-Type", "multipart/form-data");
                 xhr.setRequestHeader("X-File-Name", fileToUpload.name);
@@ -61,15 +65,13 @@
                     serverResponse = xhr.responseText;
                     $("#uploadList").append("<li id=\""+serverResponse+"\">"+
                         "<input id=\"deleteButton\" type=\"button\" onClick=\"deleteFromServer('"+serverResponse+"')\"/>"+
-                        fileToUpload.name+"</li>"                               
-                );
-                }
+                        fileToUpload.name+"</li>");
+                };
                 
                 xhr.send(fileToUpload);
             }
             
             $(function(){
-
                 $("#uploadButton").click(uploadToServer);
             });
         </script>
